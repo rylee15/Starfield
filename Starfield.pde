@@ -1,80 +1,66 @@
-class OddballParticle{ //inherits from Particle
-int myX;
-  float myY;
-  float mySpeed;
-  int mySize;
-  int myColor;
-  
-  OddballParticle(){
-    myX = (int)(Math.random()*400);
-    myY = (int)(Math.random()*380)-20;
-    mySize = (int)(Math.random()*25)+25;
-    mySpeed = mySize/100.0;
-    myColor = color(255,255,(int)(Math.random()*255));
-  }
-  
-  void rise(){
-    myX = myX + (int)(Math.random()*5)-2;
-    myY = myY - mySpeed;
-    if (myY < 0){
-      myY = (int)(Math.random()*20)+380;
-    }
-  }
-  
-  void show(){
-    noStroke();
-    fill(myColor,90);
-    ellipse(myX,myY,40,mySize);
-  }
-}
- 
-class Particle{
-  int myX;
-  float myY;
-  float mySpeed;
-  int mySize;
-  int myColor;
-  
-  Particle(){
-    myX = (int)(Math.random()*400);
-    myY = (int)(Math.random()*400);
-    mySize = 25;
-    mySpeed = mySize/25.0;
-    myColor = color(255,255,(int)(Math.random()*255));
-  }
-  
-  void rise(){
-    myX = myX + (int)(Math.random()*5)-2;
-    myY = myY - mySpeed;
-    if (myY < 0){
-      myY = (int)(Math.random()*20)+380;
-    }
-  }
-  
-  void show(){
-    noStroke();
-    fill(myColor,90);
-    ellipse(myX,myY,40,mySize);
+Particle[] bob;
+
+void setup() {
+  background(0);
+  size(500, 500);
+  bob = new Particle[999];
+  for (int i = 0; i < bob.length; i++) {
+    bob[i] = new Particle();
+    bob[0] = new OddballParticle();
   }
 }
 
-//Particle pop;
-Particle [] pop;
-void setup(){
-  size(400,400);
-  //pop = new Particle();
-  pop = new Particle[99];
-  for (int i =0; i < pop.length; i++){
-    pop[i] = new Particle();
+void draw() {
+  background (150);
+  for (int i = 0; i < bob.length; i++) {
+    bob[i].show();
+    bob[i].move();
   }
 }
-void draw(){
-  background(0);
-  for(int i = 0; i < pop.length; i++)
-  {
-    //pop.rise();
-    //pop.show();
-    pop[i].rise();
-    pop[i].show();
+
+class Particle {
+  double myX;
+  double myY;
+  double mySpeed;
+  double myAngle;
+  int myColor;
+  int mySize;
+  
+  Particle() {
+    mySize = 10;
+    myColor = color((int)(Math.random()*255),(int)(Math.random()*255),(int)(Math.random()*255));
+    myAngle = (Math.random()*2*Math.PI);
+    mySpeed = (Math.random()*11);
+  }
+  
+  void move(){
+    
+    myX = myX + Math.cos(myAngle)*mySpeed;
+    myY = myY + Math.sin(myAngle)*mySpeed;
+  }
+  
+  void show(){
+    noStroke();
+    fill(myColor);
+    ellipse((float)myX + 250, (float)myY + 250, mySize, mySize);
+  }
+}
+
+class OddballParticle extends Particle{//inherits from Particle
+  OddballParticle(){
+    myX = 250;
+    myY = 250;
+    myColor = color(255,20,147);
+    mySize = 50;
+  }
+  void move(){
+    
+    myX = CENTER + (int)(Math.random()*10)-5;
+    myY = CENTER + (int)(Math.random()*10)-5;
+  }
+  void show(){
+    noStroke();
+    fill(myColor);
+    ellipse((float)myX + 250, (float)myY + 250, mySize, mySize);
   }
 }
